@@ -45,7 +45,7 @@ Optional Dependencies: None
     Write-HijackDll                     -   writes out a hijackable DLL
     
 ### Registry Checks:
-    Get-RegistryAlwaysInstallElevated   -  checks if the AlwaysInstallElevated registry key is set
+    Get-RegistryAlwaysInstallElevated   -   checks if the AlwaysInstallElevated registry key is set
     Get-RegistryAutoLogon               -   checks for Autologon credentials in the registry
     Get-ModifiableRegistryAutoRun       -   checks for any modifiable binaries/scripts (or their configs) in HKLM autoruns
 
@@ -65,3 +65,6 @@ Optional Dependencies: None
     Test-ServiceDaclPermission          -   tests one or more passed services or service names against a given permission set
     Write-UserAddMSI                    -   write out a MSI installer that prompts for a user to be added
     Invoke-AllChecks                    -   runs all current escalation checks and returns a report
+
+### Beyond Trust Bypass Functions:
+    Find-ExploitableBeyondTrustConfigs  -   finds all exploitable beyond trust configurations
