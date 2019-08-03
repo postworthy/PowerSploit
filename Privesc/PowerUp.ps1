@@ -3776,6 +3776,7 @@ function Find-ExploitableBeyondTrustConfigurations {
     .LINK
 
         https://exploitable.app
+        https://twitter.com/keyvulns
 #>
 
     [CmdletBinding()]
