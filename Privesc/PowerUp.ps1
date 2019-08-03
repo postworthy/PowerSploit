@@ -3753,6 +3753,54 @@ function Write-UserAddMSI {
     }
 }
 
+function Find-ExploitableBeyondTrustConfigurations {
+<#
+    .SYNOPSIS
+
+        Finds all exploitable beyond trust configurations
+
+        Author: @keyvulns
+        License: BSD 3-Clause
+
+    .DESCRIPTION
+
+        Enumerates the paths stored in registry 'SOFTWARE\BeyondTrust\SD\Applications\Rules\Machine' and filters 
+		each through Get-ModifiablePath to return the folder paths the current user can write to. 
+
+    .EXAMPLE
+
+        PS C:\> Find-ExploitableBeyondTrustConfigurations
+
+        Finds all exploitable beyond trust configurations
+
+    .LINK
+
+        https://exploitable.app
+#>
+
+    [CmdletBinding()]
+    Param()
+
+	$paths = new-object System.Collections.ArrayList
+    Get-ChildItem Registry::HKEY_LOCAL_MACHINE\SOFTWARE\BeyondTrust\SD\Applications\Rules\Machine -Recurse -ErrorAction Ignore |
+	ForEach-Object { Get-ItemProperty $_.pspath -Name program -ErrorAction Ignore } |
+	where { $_.program.ToLower().Replace("/","\\").Contains(":\") } |
+    where { (new-object System.IO.DriveInfo($_.program.ToLower().SubString(0,3))).drivetype -eq "Fixed" } -ErrorAction Ignore |
+	where { $_.program -ne $null } |
+	select program |
+	Sort-Object program -Unique |
+	ForEach-Object { 
+		$mp = $($_.program.ToLower() | Get-ModifiablePath)
+		if($null -ne $mp){
+			$x=$paths.Add($_.program.ToLower())
+		}
+	}
+
+	$ObjectProperties = @{'Paths' = $paths;}
+    $ResultsObject = New-Object -TypeName PSObject -Property $ObjectProperties
+	if ($ResultsObject) {Return $ResultsObject} 
+}
+
 
 function Invoke-AllChecks {
 <#
@@ -3940,6 +3988,15 @@ function Invoke-AllChecks {
         $Results | ConvertTo-HTML -Head $Header -Body "<H2>Cached GPP Files</H2>" | Out-File -Append $HtmlReportFile
     }
     "`n"
+
+	"`n`n[*] Checking for exploitable beyond trust configuration paths...."
+    $Results = Find-ExploitableBeyondTrustConfigurations | Where-Object {$_}
+    $Results | Format-List
+    if($HTMLReport) {
+        $Results | ConvertTo-HTML -Head $Header -Body "<H2>Exploitable Beyond Trust Paths</H2>" | Out-File -Append $HtmlReportFile
+    }
+    "`n"
+	
 
     if($HTMLReport) {
         "[*] Report written to '$HtmlReportFile' `n"
