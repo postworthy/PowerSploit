@@ -21,7 +21,7 @@ Running Invoke-AllChecks will output any identifiable vulnerabilities along
 with specifications for any abuse functions. The -HTMLReport flag will also
 generate a COMPUTER.username.html version of the report.
 
-Author: @harmj0y
+Author: @harmj0y, @keyvulns
 License: BSD 3-Clause
 Required Dependencies: None
 Optional Dependencies: None

@@ -3753,7 +3753,7 @@ function Write-UserAddMSI {
     }
 }
 
-function Find-ExploitableBeyondTrustConfigurations {
+function Find-ExploitableBeyondTrustConfigs {
 <#
     .SYNOPSIS
 
@@ -3769,7 +3769,7 @@ function Find-ExploitableBeyondTrustConfigurations {
 
     .EXAMPLE
 
-        PS C:\> Find-ExploitableBeyondTrustConfigurations
+        PS C:\> Find-ExploitableBeyondTrustConfigs
 
         Finds all exploitable beyond trust configurations
 
@@ -3991,7 +3991,7 @@ function Invoke-AllChecks {
     "`n"
 
 	"`n`n[*] Checking for exploitable beyond trust configuration paths...."
-    $Results = Find-ExploitableBeyondTrustConfigurations | Where-Object {$_}
+    $Results = Find-ExploitableBeyondTrustConfigs | Where-Object {$_}
     $Results | Format-List
     if($HTMLReport) {
         $Results | ConvertTo-HTML -Head $Header -Body "<H2>Exploitable Beyond Trust Paths</H2>" | Out-File -Append $HtmlReportFile

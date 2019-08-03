@@ -24,7 +24,7 @@ PowerShellVersion = '2.0'
 # Functions to export from this module
 FunctionsToExport = @(
     'Add-ServiceDacl',
-    'Find-ExploitableBeyondTrustConfigurations',
+    'Find-ExploitableBeyondTrustConfigs',
     'Find-PathDLLHijack',
     'Find-ProcessDLLHijack',
     'Get-ApplicationHost',
